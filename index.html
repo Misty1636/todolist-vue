@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+	<meta charset="UTF-8">
+	<title>todolist</title>
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+
+
+	<link rel="stylesheet" href="css/todolist.css">
+</head>
+<body>
+	<div class="wrap">
+		<div class="content">
+			<h1>
+				<i class="fas fa-clipboard-list"></i>
+			  代辦事項
+			</h1>
+			<h5 class="time">Today is {{getTime()}}</h5>
+			<div class="add">
+				<input type="text" placeholder="輸入代辦事項" class="text" v-model="newtodo">
+				<input type="button" value="新增" class="btn" @click.prevent="addtodo(newtodo)">
+			</div>
+			<div class="other">
+				<a href="#" class="clear" @click.prevent="clearAll" v-if="todos.length>0">
+					<i class="far fa-trash-alt"></i>
+				  全部清除
+				</a>
+			</div>
+			<ul class="list">
+				<li v-for="todo in filteredTodos" @dblclick="editTodo(todo)">
+					<div class="d-flex" v-if="todo.id !== cacheTodo.id">
+						<input type="checkbox" class="ok" v-model="todo.status">
+						<p :class="{active : todo.status}">{{todo.thing}}</p>
+						<a href="#" @click.prevent="removetodo(todo)"><img src="img/close.png"></a>
+					</div>
+					<input type="text" class="edit" 
+					v-if="todo.id === cacheTodo.id"
+					@keyup.esc ="cancelTodo()"
+					@keyup.enter="saveTodo(todo)"
+					v-model="cacheTitle">
+				</li>
+			</ul>
+			<pre>
+				{{this.todos.status}}
+			</pre>
+			<div class="toggle">
+				<div class="toggle-box">
+					<button type="button" @click="visibility = 'all' ">Total</button>
+					<span>{{Total()}}</span>
+				</div>
+				<div class="toggle-box">
+					<button type="button" @click="visibility = 'completed' ">Done</button>
+					<span>{{DoneNum()}}</span>
+				</div>
+				<div class="toggle-box">
+					<button type="button" @click="visibility = 'active' ">undone</button>
+					<span>{{undoneNum()}}</span>
+				</div>
+			</div>
+		</div>
+	</div>
+  
+	<script src="js/vue.min.js"></script>
+	<script>
+		Vue.config.devtools = true
+
+		var wrap = new Vue({
+			el: '.wrap',
+			data:{
+				todos: [],
+				newtodo: '',
+				visibility: 'all',
+				cacheTodo:{},
+				cacheTitle: '',
+				getTime : ()=>{
+				let thisDate = new Date()
+				let month = (thisDate.getMonth()+1)
+				let day = thisDate.getDate()
+				let hour = thisDate.getHours()
+				let minute = thisDate.getMinutes()
+        let week = ()=>{
+        	let str = ''
+        	switch(thisDate.getDay()){
+        		case 0: 
+        		  str = 'Sunday'
+        		  break
+        		case 1: 
+        		  str = 'Monday'
+        		  break
+        		case 2: 
+        		  str = 'Tuesday'
+        		  break
+        		case 3: 
+        		  str = 'Wednesday'
+        		  break
+            case 4: 
+        		  str = 'Thursday'
+        		  break
+        		case 5: 
+        		  str = 'Friday'
+        		  break
+        		case 6: 
+        		  str = 'Saturday'
+        		  break
+        	}
+        	return str
+        }   
+
+				let time = thisDate.getFullYear()+'/'
+				if(month<10){
+					time += '0'
+				}
+				time+= month+'/'
+
+				if(day<10){
+					time += '0'
+				}
+				time+= day+' '+week()
+
+				return time
+			  }
+			},
+			methods:{
+				addtodo: function(items){
+					let value = this.newtodo.trim()
+					let times = Math.floor(Date.now())
+					if(!value) return
+          this.todos.push({id:times,thing:items,status:false})
+           this.newtodo = ''
+				},
+				removetodo: function(items){
+					this.todos.splice(this.todos.indexOf(items),1)
+				},
+				editTodo: function(items){
+          this.cacheTodo = items
+          this.cacheTitle = items.thing
+				},
+				cancelTodo: function(){
+					this.cacheTodo = {}
+				},
+				saveTodo: function(items){
+          items.thing = this.cacheTitle
+					this.cacheTitle = ''
+					this.cacheTodo = {}
+
+				},
+				clearAll: function(){
+					this.todos.splice(0,this.todos.length)
+				},
+				Total: function(){
+					return this.todos.length
+				},
+				DoneNum: function(){
+					return this.todos.filter(function(items){
+            return items.status == true
+					}).length
+				},
+				undoneNum: function(){
+					return this.todos.filter(function(items){
+            return items.status == false
+					}).length
+				}
+
+			},
+			computed:{
+				filteredTodos: function(){
+					if( this.visibility == 'all'){
+            return this.todos
+					} else if(this.visibility == 'completed'){
+            let array = []
+            this.todos.forEach(function(items){
+              if(items.status){
+              	array.push(items)
+              }
+            })
+            return array
+					} else if(this.visibility == 'active'){
+	          let array = []
+	          this.todos.forEach(function(items){
+	            if(!items.status){
+	            	array.push(items)
+	            }
+	          })
+	          return array 
+          }
+				}
+			}
+		})
+	</script>
+</body>
+</html>

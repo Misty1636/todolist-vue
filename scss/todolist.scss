@@ -1,0 +1,176 @@
+@import "_reset.scss";
+@import "_skill.scss";
+@import "_grid.scss";
+
+@include border-box;
+@include fonts;
+
+.wrap{
+	background: url(../img/photo0.jpg) no-repeat center center;
+	background-size: cover;
+	height: 100vh;
+	padding: 100px 10px 0;
+}
+
+.content{
+	max-width: 500px;
+	padding: 1rem 1.5rem;
+	margin: 0 auto;
+	border-radius: 5px;
+	background: rgba(255,255,255,.95);
+	@include iphone5{
+		padding-left: 12px;
+		padding-right: 12px;
+	}
+	h1{
+		font-size: 40px;
+		text-align: center;
+		margin-bottom: 1.5rem;
+		color: #444;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		i{
+			font-size: 30px;
+			margin-right: 5px;
+		}
+	}
+	.time{
+		font-size: 14px;
+		text-align: center;
+		margin-bottom: 2rem;
+		color: #F08080;
+		opacity: .85;
+	}
+}
+.add{
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 2rem;
+	.text{
+		width: 300px;
+		border: none;
+		font-size: 16px;
+		padding: 11px 20px;
+		border-radius: 5px;
+		color: #444444;
+		outline: 0;
+		box-shadow: 0 0 10px #444444;
+		@include mobile568{
+			width: 220px;
+			@include iphoneXS{
+				width: 180px;
+			}
+		}
+	}
+	.btn{
+		cursor: pointer;
+		border: none;
+		font-size: 16px;
+		letter-spacing: 2px;
+		padding: 10px 20px;
+		border-radius: 5px;
+		outline: 0;
+		background: #444;
+		color: #fff;
+		transition: all .3s;
+		&:hover{
+			background: #ff6f61;
+		}
+	}
+}
+.other{
+	margin-bottom: 2rem;
+	text-align: right;
+	.clear{
+		text-decoration: none;
+		color: #ef7a7a;
+		transition: all .3s;
+		&:hover{
+			color: #f22b2b;
+		}
+	}
+}
+
+.list{
+	margin-bottom: 2rem;
+	color: #444444;
+	li{
+	  margin-bottom: 1.5rem;
+	}
+	.d-flex{
+    display: flex;
+	  align-items: start;
+	  padding-bottom: 5px;
+	  border-bottom: 1px solid #CCC;
+	}
+	.ok{
+		zoom: 180%;
+		margin: 0;
+		vertical-align: middle;
+	}
+	p{
+		font-size: 20px;
+		margin: 0 1rem;
+		&.active{
+			text-indent: 10px;
+			font-style:italic;
+			text-decoration: line-through;
+			opacity: .5;
+		}
+	}
+	a{
+		margin-left: auto;
+		img{
+			height: 20px; 
+		}
+	}
+	.edit{
+		padding: 5px;
+		width: 100%;
+	}
+}
+.todo-number{
+	margin-bottom: .5rem;
+	display: flex;
+	span{
+		width: 32%;
+		text-align: center;
+		&:nth-child(2){
+			margin: 0 2%;
+		}
+	}
+}
+
+.toggle{
+	display: flex;
+	justify-content: space-between;
+	.toggle-box{
+	}
+	button{
+		width: 80px;
+		cursor: pointer;
+		outline: 0;
+		border: none;
+		border-radius: 5px;
+		padding: .5rem 0;
+		letter-spacing: 1px;
+		background: #0d8ddd;
+		color: #FFF;
+		white-space: nowrap;
+		transition: all .3s;
+		@include iphoneXSMAX{
+			width: 65px;
+			@include iphone5{
+				width: 60px;
+			}
+		}
+		&:hover{
+      background: #097cc4;
+		}
+	}
+	span{
+		padding: 0 .5rem;
+		color: #444444;
+	}
+}
